@@ -4,11 +4,11 @@
 import wave
 import math
 import struct
+import numpy
 
 # За русский алфавит Морзе я балогвдрен автору этой статьи: https://habr.com/ru/post/349776/
 
 # Russian Morze alphabet, author: https://habr.com/ru/post/349776/
-import numpy
 
 ruMorseAlphabet = {"А": ".-", "Б": "-...", "В": ".--", "Г": "--.", "Д": "-..", "Е": ".", "Ж": "...-", "З": "--..",
                    "И": "..", "Й": ".---", "К": "-.-", "Л": ".-..", "М": "--", "Н": "-.", "О": "---", "П": ".--.",
