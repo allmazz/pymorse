@@ -37,7 +37,7 @@ def FromMorze(morzeText, alphabet):  # From morze(array) to string
                 text += k # Append symbol
     return text
 
-
+#FIXME i am very slow
 def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, time=300, frequency=700):  # Generate sound file(.wav)
     nowSymble = 0 # Counter
     morzeSound = [] # Sound frames
@@ -50,7 +50,7 @@ def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, time=300, frequ
                 morzeSound.append(0.0)
         else:
             while nowMorzeSymbol < len(morzeText[nowSymble]):
-                print(morzeText[nowSymble][nowMorzeSymbol])
+                # print(morzeText[nowSymble][nowMorzeSymbol])
                 if morzeText[nowSymble][nowMorzeSymbol] == ".":  # If point append time
                     for x in range(int(time * (sample / 1000.0))):
                         morzeSound.append(volume * math.sin(2 * math.pi * frequency * (x / sample)))
