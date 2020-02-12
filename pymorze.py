@@ -72,11 +72,13 @@ def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, time=300, frequ
     morzeFile.close() # Close file
 
 
-def read_sound(file): # Gets file path returns morze array
+def read_sound(file):
+    """Gets file path returns morse array"""
     frames = []
     buf_frame = []
     w = wave.open(file, "rb")
-    for i in range(0, w.getnframes()): # read .wav and create 0,1 array
+    # read .wav and create 0,1 array
+    for i in range(0, w.getnframes()):
         s = w.readframes(1)
         f = int.from_bytes(s[:2], "big", signed=True)
         buf_frame.append(f)
@@ -91,20 +93,20 @@ def read_sound(file): # Gets file path returns morze array
     # get time beeps
     zero_or_one = frames[0]
     num = 0
-    time = []
+    timeframe = []
     out = []
     for i in range(0, len(frames)):
         if zero_or_one != frames[i]:
-            time.append([num, zero_or_one])
+            timeframe.append([num, zero_or_one])
             zero_or_one = frames[i]
             num = 0
         else:
             num += 1
-    time.append([num, zero_or_one])
+    timeframe.append([num, zero_or_one])
 
-    # create array array with morza charts
+    # create array array with morse charts
     char = ""
-    for i in time:
+    for i in timeframe:
         if i[1] == 0:
             if i[0] > 275:
                 out.append(char)
