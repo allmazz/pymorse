@@ -72,35 +72,40 @@ def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, time=300, frequ
     morzeFile.close() # Close file
 
 
-def ReadSound(file): # Gets file path returns morze array
-    frames = []
-    bufframe = []
+def read_sound(file): # Gets file path returns morze array
+    frames = [] #
+    buf_frame = []
     w = wave.open(file, "rb")
     for i in range(0, w.getnframes()):
         s = w.readframes(1)
         f = int.from_bytes(s[:2], "big", signed=True)
-        bufframe.append(f)
-        if len(bufframe) == 300:
-            if np.std(bufframe) > 5000:
+        buf_frame.append(f)
+        if len(buf_frame) == 300:
+            if np.std(buf_frame) > 5000:
                 frames.append(1)
             else:
                 frames.append(0)
-            bufframe = []
+            buf_frame = []
+
     w.close()
-    zeroorone = frames[0]
+    zero_or_one = frames[0]
     num = 0
     time = []
     out = []
+
+
     for i in range(0, len(frames)):
-        if zeroorone != frames[i]:
-            time.append([num, zeroorone])
-            zeroorone = frames[i]
+        if zero_or_one != frames[i]:
+            time.append([num, zero_or_one])
+            zero_or_one = frames[i]
             num = 0
         else:
             num += 1
-    time.append([num, zeroorone])
-    char = ""
+    time.append([num, zero_or_one])
 
+
+
+    char = ""
     for i in time:
         if i[1] == 0:
             if i[0] > 275:
