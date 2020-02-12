@@ -13,4 +13,8 @@ myDictionary = {"H": ".",
                 "O": "-"}  # ... P.S it,s not correct Morze code in this example. Correct Morze codes for any language you can fine in internet
 print(pymorze.ToMorze(text2, myDictionary))  # Exception: Symbol 'L' not in Morze alphabet
 # Because symbol 'L' nt in our example Spanish alphabet
-print(pymorze.FromMorze(pymorze.ReadSound("sound.wav"), pymorze.ruMorseAlphabet))
+
+text3 = "Карл у Клары украл кораллы, а Клара у Карла украла кларнет. Если бы Карл у Клары не украл кораллы, то Клара у Карла не украла б кларнет "
+pymorze.GenSound(pymorze.ToMorze(text3,
+                      pymorze.ruMorseAlphabet), "test.wav")
+print(pymorze.FromMorze(pymorze.ReadSound("test.wav"), pymorze.ruMorseAlphabet))
