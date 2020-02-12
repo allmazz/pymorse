@@ -4,7 +4,7 @@
 import wave
 import math
 import struct
-import numpy
+import numpy as np
 
 # За русский алфавит Морзе я балогвдрен автору этой статьи: https://habr.com/ru/post/349776/
 
@@ -74,18 +74,18 @@ def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, time=300, frequ
 
 def ReadSound(file): # Gets file path returns morze array
     frames = []
-    fiveframe = []
+    bufframe = []
     w = wave.open(file, "rb")
     for i in range(0, w.getnframes()):
         s = w.readframes(1)
         f = int.from_bytes(s[:2], "big", signed=True)
-        fiveframe.append((f ** 2) ** 0.5)
-        if len(fiveframe) == 5:
-            if np.mean(fiveframe) > 5000:
+        bufframe.append(f)
+        if len(bufframe) == 300:
+            if np.std(bufframe) > 5000:
                 frames.append(1)
             else:
                 frames.append(0)
-            fiveframe = []
+            bufframe = []
     w.close()
     zeroorone = frames[0]
     num = 0
@@ -102,20 +102,18 @@ def ReadSound(file): # Gets file path returns morze array
     char = ""
 
     for i in time:
-        print(i)
         if i[1] == 0:
-            if i[0] > 16000:
+            if i[0] > 275:
                 out.append(char)
                 char = ""
                 out.append(" ")
-            elif i[0] > 3000:
-                print("debug")
+            elif i[0] > 50:
                 out.append(char)
                 char = ""
         else:
-            if i[0] > 3000:
+            if i[0] > 50:
                 char += "-"
-            elif i[0] > 1000:
+            elif i[0] > 15:
                 char += "."
     out.append(char)
     return out
