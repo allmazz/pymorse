@@ -75,7 +75,7 @@ def gen_sound(morse_text, morse_filename, volume=1.0, sample=44100, dot_time=150
     morse_file.close()  # Close file
 
 
-def read_sound(morse_filename, dot_time=100, dash_time=400, space_time=1000, char_space_time=400):  # Read from sound file(.wav)
+def read_sound(morse_filename, dot_time=130, dash_time=430, space_time=1000, char_space_time=430):  # Read from sound file(.wav)
     frames = []
     buf_frame = []
     w = wave.open(morse_filename, "rb")
