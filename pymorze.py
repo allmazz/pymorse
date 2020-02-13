@@ -1,4 +1,4 @@
-# pymorze, library for Morze alphabet in Python. by allmaZz https://github.com/allmazz/
+# pymorse, library for morse alphabet in Python. by allmaZz https://github.com/allmazz/
 # Thanks luck20yan https://github.com/luck20yan for help with library. Special for read .wav file(ReadSound)
 # Библиотека написанна для первого тура ЗПШ 2020
 
@@ -9,7 +9,7 @@ from numpy import std
 
 # За русский алфавит Морзе я балогвдрен автору этой статьи: https://habr.com/ru/post/349776/
 
-# Russian Morze alphabet, author: https://habr.com/ru/post/349776/
+# Russian Morse alphabet, author: https://habr.com/ru/post/349776/
 
 ruMorseAlphabet = {"А": ".-", "Б": "-...", "В": ".--", "Г": "--.", "Д": "-..", "Е": ".", "Ж": "...-", "З": "--..",
                    "И": "..", "Й": ".---", "К": "-.-", "Л": ".-..", "М": "--", "Н": "-.", "О": "---", "П": ".--.",
@@ -21,70 +21,70 @@ ruMorseAlphabet = {"А": ".-", "Б": "-...", "В": ".--", "Г": "--.", "Д": "-.
                    "/": "-..-.", "?": "..--..", "!": "--..--", "@": ".--.-.", "=": "-...-", " ": " "}
 
 
-def ToMorze(text, alphabet):  # From string to morze(array)
-    morzeText = []  # Array for symbols
+def to_morse(text, alphabet):  # From string to morse(array)
+    morse_text = []  # Array for symbols
     for symbol in text.upper():
-        if symbol not in alphabet:  # If symbol not in Morze dictionary
-            raise Exception("Symbol '" + symbol + "' not in Morze alphabet")
-        morzeText.append(alphabet[symbol])  # Append symbol
-    return morzeText
+        if symbol not in alphabet:  # If symbol not in morse dictionary
+            raise Exception("Symbol '" + symbol + "' not in morse alphabet")
+        morse_text.append(alphabet[symbol])  # Append symbol
+    return morse_text
 
 
-def FromMorze(morzeText, alphabet):  # From morze(array) to string
+def from_morse(morse_text, alphabet):  # From morse(array) to string
     text = ""  # String for symbols
-    for symbol in morzeText:
+    for symbol in morse_text:
         for k, v in alphabet.items():
             if v == symbol:
                 text += k  # Append symbol
     return text
 
 
-def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, dotTime=150, frequency=700):  # Generate sound file(.wav)
-    nowSymble = 0  # Counter
-    morzeSound = []  # Sound frames
-    samp = sample / 1000  # Sample / 1000
+def gen_sound(morse_text, morse_filename, volume=1.0, sample=44100, dot_time=150, frequency=700):  # Generate sound file(.wav)
+    now_symble = 0  # Counter
+    morseSound = []  # Sound frames
+    samp = sample / 1000
     syn = 2 * pi * frequency
-    synPack0 = pack('h', 0)
+    syn_pack0 = pack('h', 0) # Prepare pach for delay
     times = {"dot": [], "dash": [], "space": [], "delay1": [], "delay3": []}  # Dictionary for times
-    for x in range(int(dotTime * samp)):  # Calculation (dotTime * 1)(for dot)
+    for x in range(int(dot_time * samp)):  # Calculation (dotTime * 1)(for dot)
         times["dot"].append(pack('h', int(volume * sin(syn * (x / sample)) * 32767.0)))
-    for x in range(int(dotTime * samp)):  # Calculation delay (dotTime * 1)(for separate symbols)
-        times["delay1"].append(synPack0)
+    for x in range(int(dot_time * samp)):  # Calculation delay (dotTime * 1)(for separate symbols)
+        times["delay1"].append(syn_pack0)
     times["dash"] = times["dot"] * 3  # Calculate dash (dotTime * 3)
     times["delay3"] = times["delay1"] * 3  # Calculate delay (dotTime * 3)(for separate character)
     times["space"] = times["delay1"] * 7  # Calculate delay (dotTime * 7)(for space)
-    while nowSymble < len(morzeText):  # Every character
-        nowMorzeSymbol = 0
-        if morzeText[nowSymble] == " ":  # If space append times["space"] (delay dor space)
-            morzeSound += times["space"]
+    while now_symble < len(morse_text):  # Every character
+        nowmorse_symbol = 0 # Counter
+        if morse_text[now_symble] == " ":  # If space append times["space"] (delay dor space)
+            morseSound += times["space"]
         else:
-            while nowMorzeSymbol < len(morzeText[nowSymble]):  # Every symbol
-                if morzeText[nowSymble][nowMorzeSymbol] == ".":  # If dot append times["dot"] (delay dor dot)
-                    morzeSound += times["dot"]
-                elif morzeText[nowSymble][nowMorzeSymbol] == "-":  # If dash append times["dash"] (delay dor dash)
-                    morzeSound += times["dash"]
-                nowMorzeSymbol += 1
-                if nowMorzeSymbol < len(morzeText[nowSymble]):  # If no last morzeSymbol in character append times["delay1"] (delay for morzeSymbol)
-                    morzeSound += times["delay1"]
-        nowSymble += 1
-        if nowSymble < len(morzeText) and morzeText[nowSymble - 1] != " " and morzeText[nowSymble] != " ":  # If no last symbol in word append delay(for separate character)
-            morzeSound += times["delay3"]
-    morzeFile = wave.open(morzeFilename, "w")  # Open file
-    morzeFile.setparams((1, 2, sample, 0, "NONE", "not compressed"))  # Set WAV parameters
-    morzeFile.writeframes(b"".join(morzeSound)) # Write frames
-    morzeFile.close()  # Close file
+            while nowmorse_symbol < len(morse_text[now_symble]):  # Every symbol
+                if morse_text[now_symble][nowmorse_symbol] == ".":  # If dot append times["dot"] (delay dor dot)
+                    morseSound += times["dot"]
+                elif morse_text[now_symble][nowmorse_symbol] == "-":  # If dash append times["dash"] (delay dor dash)
+                    morseSound += times["dash"]
+                nowmorse_symbol += 1
+                if nowmorse_symbol < len(morse_text[now_symble]):  # If no last morseSymbol in character append times["delay1"] (delay for morseSymbol)
+                    morseSound += times["delay1"]
+        now_symble += 1
+        if now_symble < len(morse_text) and morse_text[now_symble - 1] != " " and morse_text[now_symble] != " ":  # If no last symbol in word append delay(for separate character)
+            morseSound += times["delay3"]
+    morse_file = wave.open(morse_filename, "w")  # Open file
+    morse_file.setparams((1, 2, sample, 0, "NONE", "not compressed"))  # Set WAV parameters
+    morse_file.writeframes(b"".join(morseSound)) # Write frames
+    morse_file.close()  # Close file
 
 
-def ReadSound(morzeFilename, dotTime=150):  # Read from sound file(.wav)
+def read_sound(morse_filename, dot_time=150):  # Read from sound file(.wav)
     frames = []
     buf_frame = []
-    w = wave.open(morzeFilename, "rb")
+    w = wave.open(morse_filename, "rb")
     # read .wav and create 0,1 array
     for i in range(0, w.getnframes()):
         s = w.readframes(1)
         f = int.from_bytes(s[:2], "big", signed=True)
         buf_frame.append(f)
-        if len(buf_frame) == dotTime:
+        if len(buf_frame) == dot_time:
             if std(buf_frame) > 5000:
                 frames.append(1)
             else:
