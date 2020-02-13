@@ -129,3 +129,4 @@ def ReadSound(morzeFilename, dotTime=150):  # Read from sound file(.wav)
                 char += "."
     return out.append(char)
  
+ 
