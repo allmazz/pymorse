@@ -75,17 +75,21 @@ def gen_sound(morse_text, morse_filename, volume=1.0, sample=44100, dot_time=150
     morse_file.close()  # Close file
 
 
-def read_sound(morse_filename, dot_time=100, dash_time=400, space_time=1000, char_space_time=400):  # Read from sound file(.wav)
-    frames = []
+def read_sound(morse_filename, dot_time=150):  # Read from sound file(.wav) (written by luck20yan)
+    frames = [] # Arrays
     buf_frame = []
-    w = wave.open(morse_filename, "rb")
+    dash_time = dot_time * 3 # Calculate timings
+    char_space_time = dash_time
+    space_time = dot_time * 7
+    dot_time -= 20 # Calculate faults
+    dash_time -= 20
+    char_space_time -= 20
+    space_time -= 20
+    w = wave.open(morse_filename, "rb") # Open file
     frame_per_ms = w.getframerate()/1000
     # read .wav and create 0,1 array
     for i in range(0, w.getnframes()):
-
-        s = w.readframes(1)
-        f = int.from_bytes(s[:2], "big", signed=True)
-        buf_frame.append(f)
+        buf_frame.append(int.from_bytes(w.readframes(1)[:2], "big", signed=True))
         if len(buf_frame) == 300:
             if std(buf_frame) > 5000:
                 frames.append(1)
@@ -108,7 +112,6 @@ def read_sound(morse_filename, dot_time=100, dash_time=400, space_time=1000, cha
     time_frame.append([num*300/frame_per_ms, zero_or_one])
 
     # create array array with morse charts
-    print(time_frame)
     char = ""
     for i in time_frame:
         if i[1] == 0:
@@ -125,6 +128,4 @@ def read_sound(morse_filename, dot_time=100, dash_time=400, space_time=1000, cha
             elif i[0] > dot_time:
                 char += "."
     out.append(char)
-    print(out)
-
     return out
