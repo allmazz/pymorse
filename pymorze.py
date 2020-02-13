@@ -2,6 +2,7 @@
 # Thanks luck20yan https://github.com/luck20yan for help with library. Special for read .wav file(ReadSound)
 # Библиотека написанна для первого тура ЗПШ 2020
 
+#FIXME learn PEP8
 import wave
 from math import pi, sin
 from struct import pack
@@ -20,7 +21,7 @@ ruMorseAlphabet = {"А": ".-", "Б": "-...", "В": ".--", "Г": "--.", "Д": "-.
                    ";": "-.-.-.", "(": "-.--.-", ")": "-.--.-", "'": ".----.", "\"": ".-..-.", "-": "-....-",
                    "/": "-..-.", "?": "..--..", "!": "--..--", "@": ".--.-.", "=": "-...-", " ": " "}
 
-
+#FIXME rename
 def ToMorze(text, alphabet):  # From string to morze(array)
     morzeText = []  # Array for symbols
     for symbol in text.upper():
@@ -30,6 +31,7 @@ def ToMorze(text, alphabet):  # From string to morze(array)
     return morzeText
 
 
+#FIXME rename
 def FromMorze(morzeText, alphabet):  # From morze(array) to string
     text = ""  # String for symbols
     for symbol in morzeText:
@@ -39,6 +41,7 @@ def FromMorze(morzeText, alphabet):  # From morze(array) to string
     return text
 
 
+#FIXME rename
 def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, dotTime=150, frequency=700):  # Generate sound file(.wav)
     nowSymble = 0  # Counter
     morzeSound = []  # Sound frames
@@ -75,6 +78,7 @@ def GenSound(morzeText, morzeFilename, volume=1.0, sample=44100, dotTime=150, fr
     morzeFile.close()  # Close file
 
 
+#FIXME rename
 def ReadSound(morzeFilename, dotTime=150):  # Read from sound file(.wav)
     frames = []
     buf_frame = []
