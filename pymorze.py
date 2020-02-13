@@ -1,6 +1,6 @@
 # pymorze, library for Morze alphabet in Python. by allmaZz https://github.com/allmazz/
 # Thanks luck20yan https://github.com/luck20yan for help with library. Special for read .wav file(ReadSound)
-# Библиотека написанна для первого тура ЗПШ 2020
+# Библиотека написанна для первого тура ЗПШ 2020 командой "К.Г.Б и так далее"
 
 #FIXME learn PEP8
 import wave
